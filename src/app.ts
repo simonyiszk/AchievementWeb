@@ -6,6 +6,9 @@ import logger from "morgan";
 import fetch from "node-fetch";
 import passport from "passport";
 import { Strategy } from "passport-oauth2";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 var app = express();
 
@@ -29,9 +32,8 @@ passport.use(
     {
       authorizationURL: "https://auth.sch.bme.hu/site/login",
       tokenURL: "https://auth.sch.bme.hu/oauth2/token",
-      clientID: "72523506426915946950",
-      clientSecret:
-        "pQtciwevnTBZZWdbkr147eCzY6gpRkU82EZa24LfNN5mjXDKF5DBYG1wBWcT8xQy3qOujaPxoJZNhdYm",
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
       callbackURL: "http://localhost:8080/auth/oauth/callback",
       scope: ["basic", "displayName", "mail", "eduPersonEntitlement"],
     },
@@ -39,7 +41,7 @@ passport.use(
       const responseUser = await fetch(
         `https://auth.sch.bme.hu/api/profile?access_token=${accessToken}`
       ).then((res) => res.json());
-
+      console.log(responseUser);
       const user = getUser(responseUser.internal_id);
 
       if (user) {
