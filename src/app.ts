@@ -1,23 +1,20 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var fetch = require("node-fetch");
-var passport = require("passport");
-var OAuth2Strategy = require("passport-oauth2").Strategy;
-
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+import createError from "http-errors";
+import express from "express";
+import path from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import fetch from "node-fetch";
+import passport from "passport";
+import { Strategy } from "passport-oauth2";
 
 var app = express();
 
 const userDb = [];
-addUser = user => {
+const addUser = (user) => {
   userDb.push(user);
   return user;
 };
-getUser = id => userDb.find(it => it.internal_id === id);
+const getUser = (id) => userDb.find((it) => it.internal_id === id);
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -28,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(
-  new OAuth2Strategy(
+  new Strategy(
     {
       authorizationURL: "https://auth.sch.bme.hu/site/login",
       tokenURL: "https://auth.sch.bme.hu/oauth2/token",
@@ -42,11 +39,11 @@ passport.use(
       const responseUser = await fetch(
         `https://auth.sch.bme.hu/api/profile?access_token=${accessToken}`
       ).then((res) => res.json());
-      
-      const user = getUser(responseUser.internal_id)
+
+      const user = getUser(responseUser.internal_id);
 
       if (user) {
-        done(null, user)
+        done(null, user);
       } else {
         const u = addUser(responseUser);
         done(null, u);
@@ -55,7 +52,7 @@ passport.use(
   )
 );
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: any, done) => {
   done(null, user.internal_id);
 });
 
@@ -71,8 +68,7 @@ app.get(
   (req, res) => res.redirect(req.session.returnTo || "/")
 );
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/", (req, res, next) => res.send("Hello"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -90,4 +86,4 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
-module.exports = app;
+export default app;
