@@ -1,14 +1,22 @@
 import createError from "http-errors";
 import express from "express";
 import cookieParser from "cookie-parser";
-import bodyParser from 'body-parser'
+import bodyParser from "body-parser";
+import Knex from "knex";
+import { Model } from "objection";
 import logger from "morgan";
 import fetch from "node-fetch";
 import passport from "passport";
 import { Strategy } from "passport-oauth2";
 import dotenv from "dotenv";
+const dbConfig = require('../knexfile')
+
+import { Group } from "./components/group/group";
 
 dotenv.config();
+
+const knex = Knex(dbConfig.development);
+Model.knex(knex);
 
 var app = express();
 
@@ -19,8 +27,8 @@ const addUser = (user) => {
 };
 const getUser = (id) => userDb.find((it) => it.internal_id === id);
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -70,7 +78,11 @@ app.get(
   passport.authenticate("oauth2", { failureRedirect: "/" }),
   (req, res) => res.redirect(req.session.returnTo || "/")
 );
-
+app.use("/test", async (req, res, next) => {
+  const groups = await Group.query();
+  console.log(groups);
+  res.send(groups);
+});
 app.use("/", (req, res, next) => res.send("Hello"));
 
 // catch 404 and forward to error handler
