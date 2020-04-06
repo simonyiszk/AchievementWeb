@@ -1,5 +1,5 @@
 require("dotenv").config();
-require('ts-node/register');
+require("ts-node/register");
 
 module.exports = {
   development: {
@@ -13,12 +13,21 @@ module.exports = {
       extension: "ts",
       directory: "./migrations",
     },
+    seeds: {
+        extension: "ts",
+        directory: "./seeds",
+    }
   },
   production: {
     client: "sqlite",
     useNullAsDefault: true,
     connection: {
       filename: process.env.SQLITE_DBNAME,
+    },
+    migrations: {
+      tableName: "migrationTable",
+      extension: "ts",
+      directory: "./migrations",
     },
   },
 };
