@@ -1,7 +1,7 @@
 import createError from "http-errors";
 import express from "express";
-import path from "path";
 import cookieParser from "cookie-parser";
+import bodyParser from 'body-parser'
 import logger from "morgan";
 import fetch from "node-fetch";
 import passport from "passport";
@@ -19,11 +19,12 @@ const addUser = (user) => {
 };
 const getUser = (id) => userDb.find((it) => it.internal_id === id);
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
 app.use(passport.session());
 
