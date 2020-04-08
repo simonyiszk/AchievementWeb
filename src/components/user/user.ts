@@ -7,6 +7,7 @@ export class User extends Model {
   name: string;
   email: string;
   authSchId: string;
+  admin: boolean;
 
   static get tableName() {
     return "users";

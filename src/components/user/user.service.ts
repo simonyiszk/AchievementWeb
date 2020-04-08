@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 
 import { User } from "./user";
-import { findUserById } from "../../util/authentication";
 
 interface OAuthUser {
   displayName: string;
@@ -25,12 +24,27 @@ export const getUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = findUserById((req.user as User).id);
+  const user = await User.query().findOne({ id: parseInt(req.params.id) });
 
   if (!user) {
     next(createError(404));
   } else {
     req.queriedUser = user;
+    next();
+  }
+};
+
+export const toggleAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = await User.query().findOne({ id: parseInt(req.params.id) });
+
+  if (!user) {
+    next(createError(404));
+  } else {
+    await User.query().patch({ admin: !user.admin }).where({ id: user.id });
     next();
   }
 };
@@ -41,6 +55,7 @@ export const createUser = async (user: OAuthUser) => {
       name: user.displayName,
       email: user.mail,
       authSchId: user.internal_id,
+      admin: false,
     });
   });
 };
