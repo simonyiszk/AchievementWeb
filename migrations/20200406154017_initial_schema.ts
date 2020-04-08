@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<any> {
       table.string("name");
       table.string("email");
       table.string("authSchId");
+      table.boolean("admin");
     })
     .createTable("groups", (table) => {
       table.increments("id").primary();
