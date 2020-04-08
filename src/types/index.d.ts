@@ -6,6 +6,8 @@ declare global {
     interface Request {
       queriedUser: User;
       queriedUsers: User[];
+      queriedGroup: Group;
+      queriedGroups: Group[];
     }
   }
 }
