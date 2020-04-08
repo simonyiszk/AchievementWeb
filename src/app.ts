@@ -2,6 +2,7 @@ import createError from "http-errors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import session from "express-session";
 import Knex from "knex";
 import { Model } from "objection";
 import logger from "morgan";
@@ -29,6 +30,14 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -62,7 +71,7 @@ passport.use(
 );
 
 passport.serializeUser((user: any, done) => {
-  done(null, user.internal_id);
+  done(null, user.id);
 });
 
 passport.deserializeUser(async (id: any, done) => {
@@ -94,7 +103,10 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.json({
+    message: err.message,
+    error: err,
+  });
 });
 
 export default app;
