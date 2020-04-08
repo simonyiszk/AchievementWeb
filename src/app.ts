@@ -11,11 +11,8 @@ import { Strategy } from "passport-oauth2";
 import dotenv from "dotenv";
 const dbConfig = require("../knexfile");
 
-import {
-  findUserById,
-  findUserByAuthschId,
-  createUser,
-} from "./components/user/user.service";
+import { findUserById, findUserByAuthschId } from "./util/authentication";
+import { createUser } from "./components/user/user.service";
 
 import userRouter from "./components/user/user.routes";
 
@@ -55,8 +52,8 @@ passport.use(
       if (user) {
         done(null, user);
       } else {
-        const u = createUser(responseUser);
-        done(null, u);
+        const newUser = createUser(responseUser);
+        done(null, newUser);
       }
     }
   )

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 
 import { User } from "./user";
+import { findUserById } from "../../util/authentication";
 
 interface OAuthUser {
   displayName: string;
@@ -14,9 +15,9 @@ export const getAllUser = async (
   res: Response,
   next: NextFunction
 ) => {
-    const users = await User.query();
-    req.queriedUsers = users;
-    next();
+  const users = await User.query();
+  req.queriedUsers = users;
+  next();
 };
 
 export const getUser = async (
@@ -34,14 +35,6 @@ export const getUser = async (
   }
 };
 
-export const findUserById = async (id: Number) => {
-  return await User.query().findOne({ id });
-};
-
-export const findUserByAuthschId = async (authSchId: String) => {
-  return await User.query().findOne({ authSchId });
-};
-
 export const createUser = async (user: OAuthUser) => {
   return await User.transaction(async (trx) => {
     return await User.query(trx).insert({
@@ -50,16 +43,4 @@ export const createUser = async (user: OAuthUser) => {
       authSchId: user.internal_id,
     });
   });
-};
-
-export const isAuthenticated = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    next(createError(401));
-  }
 };

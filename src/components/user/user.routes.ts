@@ -1,6 +1,7 @@
 import { Router } from "express";
 
-import { getAllUser, getUser, isAuthenticated } from "./user.service";
+import { getAllUser, getUser } from "./user.service";
+import { isAuthenticated } from "../../util/authentication";
 
 const router = Router();
 
