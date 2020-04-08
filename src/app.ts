@@ -11,7 +11,7 @@ import { Strategy } from "passport-oauth2";
 import dotenv from "dotenv";
 const dbConfig = require("../knexfile");
 
-import { findUserById, findUserByAuthschId } from "./util/authentication";
+import { User } from "./components/user/user";
 import { createUser } from "./components/user/user.service";
 
 import userRouter from "./components/user/user.routes";
@@ -47,7 +47,9 @@ passport.use(
         `https://auth.sch.bme.hu/api/profile?access_token=${accessToken}`
       ).then((res) => res.json());
 
-      const user = findUserByAuthschId(responseUser.internal_id);
+      const user = await User.query().findOne({
+        authSchId: responseUser.internal_id,
+      });
 
       if (user) {
         done(null, user);
@@ -64,7 +66,7 @@ passport.serializeUser((user: any, done) => {
 });
 
 passport.deserializeUser(async (id: any, done) => {
-  const user = findUserById(id);
+  const user = await User.query().findOne({ id });
   done(null, user);
 });
 
