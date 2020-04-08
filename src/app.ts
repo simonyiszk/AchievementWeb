@@ -9,9 +9,15 @@ import fetch from "node-fetch";
 import passport from "passport";
 import { Strategy } from "passport-oauth2";
 import dotenv from "dotenv";
-const dbConfig = require('../knexfile')
+const dbConfig = require("../knexfile");
 
-import { Group } from "./components/group/group";
+import {
+  findUserById,
+  findUserByAuthschId,
+  createUser,
+} from "./components/user/user.service";
+
+import userRouter from "./components/user/user.routes";
 
 dotenv.config();
 
@@ -19,13 +25,6 @@ const knex = Knex(dbConfig.development);
 Model.knex(knex);
 
 var app = express();
-
-const userDb = [];
-const addUser = (user) => {
-  userDb.push(user);
-  return user;
-};
-const getUser = (id) => userDb.find((it) => it.internal_id === id);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -50,13 +49,13 @@ passport.use(
       const responseUser = await fetch(
         `https://auth.sch.bme.hu/api/profile?access_token=${accessToken}`
       ).then((res) => res.json());
-      console.log(responseUser);
-      const user = getUser(responseUser.internal_id);
+
+      const user = findUserByAuthschId(responseUser.internal_id);
 
       if (user) {
         done(null, user);
       } else {
-        const u = addUser(responseUser);
+        const u = createUser(responseUser);
         done(null, u);
       }
     }
@@ -67,10 +66,12 @@ passport.serializeUser((user: any, done) => {
   done(null, user.internal_id);
 });
 
-passport.deserializeUser(async (id, done) => {
-  const user = getUser(id);
+passport.deserializeUser(async (id: any, done) => {
+  const user = findUserById(id);
   done(null, user);
 });
+
+app.use("/users", userRouter);
 
 app.get("/login", passport.authenticate("oauth2"));
 app.get(
@@ -78,11 +79,7 @@ app.get(
   passport.authenticate("oauth2", { failureRedirect: "/" }),
   (req, res) => res.redirect(req.session.returnTo || "/")
 );
-app.use("/test", async (req, res, next) => {
-  const groups = await Group.query();
-  console.log(groups);
-  res.send(groups);
-});
+
 app.use("/", (req, res, next) => res.send("Hello"));
 
 // catch 404 and forward to error handler
