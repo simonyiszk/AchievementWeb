@@ -9,6 +9,16 @@ interface OAuthUser {
   mail: string;
 }
 
+export const getAllUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+    const users = await User.query();
+    req.queriedUsers = users;
+    next();
+};
+
 export const getUser = async (
   req: Request,
   res: Response,
@@ -17,7 +27,7 @@ export const getUser = async (
   const user = findUserById((req.user as User).id);
 
   if (!user) {
-    next(createError(404))
+    next(createError(404));
   } else {
     req.queriedUser = user;
     next();
@@ -50,6 +60,6 @@ export const isAuthenticated = (
   if (req.isAuthenticated()) {
     next();
   } else {
-    next(createError(401))
+    next(createError(401));
   }
 };
