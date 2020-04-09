@@ -8,7 +8,8 @@ export class Achievement extends Model {
   title: string;
   category: string;
   level: number;
-  groupId: number;
+  users: User[];
+  group: Group;
 
   static get tableName() {
     return "achievements";
@@ -29,7 +30,7 @@ export class Achievement extends Model {
           },
           to: "users.id",
         },
-        groups: {
+        group: {
           relation: Model.BelongsToOneRelation,
           modelClass: Group,
 

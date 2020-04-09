@@ -6,6 +6,7 @@ import { Achievement } from "../achievement/achievement";
 export class Group extends Model {
   id!: number;
   name: string;
+  achievements: Achievement[];
   leaderId: number | null;
 
   static get tableName() {
@@ -14,7 +15,7 @@ export class Group extends Model {
 
   static get relationMappings() {
     return {
-      achievement: {
+      achievements: {
         relation: Model.HasManyRelation,
         modelClass: Achievement,
 

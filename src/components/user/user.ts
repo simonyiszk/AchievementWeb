@@ -9,6 +9,8 @@ export class User extends Model {
   email: string;
   authSchId: string;
   admin: boolean;
+  achievements: Achievement[];
+  leader: Group[];
 
   static get tableName() {
     return "users";
