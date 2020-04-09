@@ -8,6 +8,7 @@ export class Achievement extends Model {
   title: string;
   category: string;
   level: number;
+  groupId: number;
 
   static get tableName() {
     return "achievements";
@@ -51,6 +52,7 @@ export class Achievement extends Model {
         title: { type: "string", minLength: 1, maxLength: 255 },
         category: { type: "string" },
         level: { type: "integer" },
+        leaderId: { type: "integer" },
       },
     };
   }
