@@ -12,6 +12,13 @@ export async function up(knex: Knex): Promise<any> {
     .createTable("groups", (table) => {
       table.increments("id").primary();
       table.string("name");
+
+      table
+        .integer("leaderId")
+        .unsigned()
+        .references("id")
+        .inTable("users")
+        .index();
     })
     .createTable("achievements", (table) => {
       table.increments("id").primary();

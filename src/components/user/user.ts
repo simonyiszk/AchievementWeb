@@ -1,5 +1,6 @@
 import { Model } from "objection";
 
+import { Group } from "../group/group";
 import { Achievement } from "../achievement/achievement";
 
 export class User extends Model {
@@ -27,6 +28,15 @@ export class User extends Model {
             extra: ["status", "dateRequested", "dateClosed", "img"],
           },
           to: "achievements.id",
+        },
+      },
+      leader: {
+        relation: Model.HasManyRelation,
+        modelClass: Group,
+
+        join: {
+          from: "users.id",
+          to: "groups.leaderId",
         },
       },
     };
