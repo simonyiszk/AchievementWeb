@@ -51,6 +51,7 @@ export class User extends Model {
         id: { type: "integer" },
         name: { type: "string", minLength: 1, maxLength: 255 },
         authSchId: { type: "string" },
+        admin: { type: "boolean" },
       },
     };
   }
