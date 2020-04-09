@@ -9,7 +9,7 @@ router.get("/:id", isAuthenticated, getUser, (req, res) =>
   res.json(req.queriedUser)
 );
 
-router.post("/:id/admin", isAdmin, toggleAdmin, (req, res) =>
+router.post("/:id/admin", isAuthenticated, isAdmin, toggleAdmin, (req, res) =>
   res.json("Success!")
 );
 
