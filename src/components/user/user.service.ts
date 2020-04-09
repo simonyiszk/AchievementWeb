@@ -2,11 +2,23 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 
 import { User } from "./user";
+import { Group } from "../group/group";
 
+import groupnames from "../../util/groupnames.json";
+
+interface OAuthUserGroups {
+  id: number;
+  name: string;
+  status: string;
+  title?: string[];
+  start: Date;
+  end: Date | null;
+}
 interface OAuthUser {
   displayName: string;
   internal_id: string;
   mail: string;
+  eduPersonEntitlement: OAuthUserGroups[];
 }
 
 export const getAllUser = async (
@@ -58,4 +70,14 @@ export const createUser = async (user: OAuthUser) => {
       admin: false,
     });
   });
+};
+
+export const updateLeader = async (user: User, groups: OAuthUserGroups[]) => {
+  const ledGroupNames = groups
+    .filter((group) => groupnames.names.indexOf(group.name) > -1)
+    .filter((group) => group.end === null)
+    .map((group) => group.name);
+  if (ledGroupNames.length > 0) {
+    await Group.query().whereIn("name", ledGroupNames).patch({ leaderId: user.id });
+  }
 };

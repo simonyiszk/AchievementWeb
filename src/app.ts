@@ -13,7 +13,7 @@ import dotenv from "dotenv";
 const dbConfig = require("../knexfile");
 
 import { User } from "./components/user/user";
-import { createUser } from "./components/user/user.service";
+import { createUser, updateLeader } from "./components/user/user.service";
 
 import userRouter from "./components/user/user.routes";
 
@@ -61,9 +61,11 @@ passport.use(
       });
 
       if (user) {
+        await updateLeader(user, responseUser.eduPersonEntitlement);
         done(null, user);
       } else {
-        const newUser = createUser(responseUser);
+        const newUser = await createUser(responseUser);
+        await updateLeader(newUser, responseUser.eduPersonEntitlement);
         done(null, newUser);
       }
     }
