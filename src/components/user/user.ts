@@ -11,6 +11,10 @@ export class User extends Model {
   admin: boolean;
   achievements: Achievement[];
   leader: Group[];
+  status: string;
+  dateRequested: Date;
+  dateClosed: Date;
+  img: any;
 
   static get tableName() {
     return "users";

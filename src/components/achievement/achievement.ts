@@ -11,6 +11,10 @@ export class Achievement extends Model {
   description: string;
   users: User[];
   group: Group;
+  status: string;
+  dateRequested: Date;
+  dateClosed: Date;
+  img: any;
 
   static get tableName() {
     return "achievements";
