@@ -5,10 +5,14 @@ import {
   createAchievement,
   updateAchievement,
   deleteAchievement,
+  requestUpgrade,
 } from "./achievement.service";
 import { isAuthenticated, isAdmin } from "../../util/authentication";
 
 const router = Router();
+
+// Request upgrade id=AchievementID
+router.post("/:id/request", requestUpgrade, (req, res) => res.json("Success"));
 
 // View details of an achievement id=AchievementID
 router.get("/:id", getAchievement, (req, res) =>

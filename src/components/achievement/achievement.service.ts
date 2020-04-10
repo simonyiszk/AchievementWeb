@@ -3,12 +3,7 @@ import createError from "http-errors";
 
 import { Achievement } from "./achievement";
 import { Group } from "../group/group";
-
-interface OAuthUser {
-  displayName: string;
-  internal_id: string;
-  mail: string;
-}
+import { User } from "../user/user";
 
 export const getAchievement = async (
   req: Request,
@@ -60,12 +55,12 @@ export const updateAchievement = async (
   if (!achievement) {
     next(createError(404));
   } else {
-    const achievement = req.body.achievement;
+    const achievementData = req.body.achievement;
     const newAchievement = await Achievement.transaction(async (trx) => {
       return await Achievement.query(trx).patchAndFetchById(
         parseInt(req.params.id),
         {
-          ...achievement,
+          ...achievementData,
           id: parseInt(req.params.id),
         }
       );
@@ -90,6 +85,32 @@ export const deleteAchievement = async (
       return await Achievement.query(trx)
         .findOne({ id: parseInt(req.params.id) })
         .delete();
+    });
+    next();
+  }
+};
+export const requestUpgrade = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const achievement = await Achievement.query().findOne({
+    id: parseInt(req.params.id),
+  });
+  const user = await User.query().findOne({ id: 1 /*(req.user as User)?.id*/ });
+
+  if (!achievement || !user) {
+    next(createError(404));
+  } else {
+    const joined = await Achievement.transaction(async (trx) => {
+      return await Achievement.relatedQuery("users", trx)
+        .for(achievement.id)
+        .relate({
+          id: user.id,
+          status: "pending",
+          dateRequested: new Date(),
+          //TODO: img
+        });
     });
     next();
   }
