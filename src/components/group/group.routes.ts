@@ -9,16 +9,20 @@ import {
 
 const router = Router();
 
-router.get("/:id", isAuthenticated, isAdminOrGroupLead, getGroup, (req, res) =>
-  res.json(req.queriedGroup)
+// Get a group with achievements id="GroupID"
+router.get("/:id", getGroup, (req, res) =>
+  res.json({
+    allAchievements: req.queriedAchievements,
+    userAchievements: req.queriedUserAchievements,
+  })
 );
 
-router.get("/", isAuthenticated, getAllGroup, (req, res) =>
-  res.json(req.queriedGroups)
-);
+// List all groups
+router.get("/", getAllGroup, (req, res) => res.json(req.queriedGroups));
 
-router.put("/:id", isAuthenticated, isAdmin, updateGroup, (req, res) => {
-  res.json("Success");
+// Update group id=GroupID
+router.put("/:id", updateGroup, (req, res) => {
+  res.json(req.queriedGroup);
 });
 
 export default router;

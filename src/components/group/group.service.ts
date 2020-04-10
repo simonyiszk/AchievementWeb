@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import createError from "http-errors";
 
 import { Group } from "./group";
+import { User } from "../user/user";
 
 interface OAuthUser {
   displayName: string;
@@ -25,11 +26,20 @@ export const getGroup = async (
   next: NextFunction
 ) => {
   const group = await Group.query().findOne({ id: parseInt(req.params.id) });
+  const user = await User.query().findOne({ id: 1 /*(req.user as User)?.id*/ });
 
-  if (!group) {
+  if (!group || !user) {
     next(createError(404));
   } else {
-    req.queriedGroup = group;
+    const groupAchievements = await Group.relatedQuery("achievements").for(
+      group.id
+    );
+    const userAchievements = await User.relatedQuery("achievements")
+      .for(user.id)
+      .where({ groupId: group.id });
+    /*.groupBy("achievements.id");*/
+    req.queriedAchievements = groupAchievements;
+    req.queriedUserAchievements = userAchievements;
     next();
   }
 };
@@ -39,13 +49,21 @@ export const updateGroup = async (
   res: Response,
   next: NextFunction
 ) => {
-  await Group.transaction(async (trx) => {
-    return await Group.query(trx)
-      .findOne({ id: parseInt(req.params.id) })
-      .patch({
-        ...req.body.group,
+  const group = await Group.query().findOne({
+    id: parseInt(req.params.id),
+  });
+
+  if (!group) {
+    next(createError(404));
+  } else {
+    const groupData = req.body.group;
+    const newGroup = await Group.transaction(async (trx) => {
+      return await Group.query(trx).patchAndFetchById(parseInt(req.params.id), {
+        ...groupData,
         id: parseInt(req.params.id),
       });
-  });
-  next();
+    });
+    req.queriedGroup = newGroup;
+    next();
+  }
 };
