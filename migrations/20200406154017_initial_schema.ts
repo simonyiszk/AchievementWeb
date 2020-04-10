@@ -25,6 +25,7 @@ export async function up(knex: Knex): Promise<any> {
       table.string("title");
       table.string("category");
       table.integer("level");
+      table.string("description");
 
       table
         .integer("groupId")

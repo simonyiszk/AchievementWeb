@@ -8,6 +8,7 @@ export class Achievement extends Model {
   title: string;
   category: string;
   level: number;
+  description: string;
   users: User[];
   group: Group;
 
@@ -53,6 +54,7 @@ export class Achievement extends Model {
         title: { type: "string", minLength: 1, maxLength: 255 },
         category: { type: "string" },
         level: { type: "integer" },
+        description: { type: "string" },
         leaderId: { type: "integer" },
       },
     };
