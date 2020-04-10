@@ -1,6 +1,11 @@
 import { Router } from "express";
 
-import { getAllGroup, getGroup, updateGroup } from "./group.service";
+import {
+  getAllGroup,
+  getGroup,
+  manageGroup,
+  updateGroup,
+} from "./group.service";
 import {
   isAuthenticated,
   isAdmin,
@@ -13,12 +18,23 @@ const router = Router();
 router.get("/:id", getGroup, (req, res) =>
   res.json({
     allAchievements: req.queriedAchievements,
-    userAchievements: req.queriedUserAchievements,
+    userAchievementLevels: req.queriedUserAchievements,
   })
 );
 
+// Get a group with achievements id="GroupID"
+router.get("/:id/manage", manageGroup, (req, res) =>
+  res.json(req.queriedUsers)
+);
+
 // List all groups
-router.get("/", getAllGroup, (req, res) => res.json(req.queriedGroups));
+router.get("/", getAllGroup, (req, res) => {
+  const response = req.queriedGroups.map(({ id, name, ...rest }) => ({
+    id,
+    name,
+  }));
+  return res.json(response);
+});
 
 // Update group id=GroupID
 router.put("/:id", updateGroup, (req, res) => {
