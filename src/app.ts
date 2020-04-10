@@ -17,6 +17,7 @@ import { createUser, updateLeader } from "./components/user/user.service";
 
 import userRouter from "./components/user/user.routes";
 import groupRouter from "./components/group/group.routes";
+import achievementRouter from "./components/achievement/achievement.routes";
 
 dotenv.config();
 
@@ -84,6 +85,7 @@ passport.deserializeUser(async (id: any, done) => {
 
 app.use("/users", userRouter);
 app.use("/groups", groupRouter);
+app.use("/achievement", achievementRouter);
 
 app.get("/login", passport.authenticate("oauth2"));
 app.get(

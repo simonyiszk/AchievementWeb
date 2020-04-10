@@ -8,6 +8,7 @@ declare global {
       queriedUsers: User[];
       queriedGroup: Group;
       queriedGroups: Group[];
+      queriedAchievement: Achievement;
     }
   }
 }
