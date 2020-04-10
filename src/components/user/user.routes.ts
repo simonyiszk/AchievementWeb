@@ -5,7 +5,7 @@ import { isAuthenticated, isAdmin } from "../../util/authentication";
 
 const router = Router();
 
-router.get("/:id", isAuthenticated, getUser, (req, res) =>
+router.get("/:id", isAuthenticated, isAdmin, getUser, (req, res) =>
   res.json(req.queriedUser)
 );
 

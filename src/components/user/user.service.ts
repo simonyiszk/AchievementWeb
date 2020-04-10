@@ -78,6 +78,8 @@ export const updateLeader = async (user: User, groups: OAuthUserGroups[]) => {
     .filter((group) => group.end === null)
     .map((group) => group.name);
   if (ledGroupNames.length > 0) {
-    await Group.query().whereIn("name", ledGroupNames).patch({ leaderId: user.id });
+    await Group.query()
+      .whereIn("name", ledGroupNames)
+      .patch({ leaderId: user.id });
   }
 };
