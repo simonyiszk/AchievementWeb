@@ -45,7 +45,7 @@ export class Group extends Model {
       properties: {
         id: { type: "integer" },
         name: { type: "string", minLength: 1, maxLength: 255 },
-        leaderId: { type: ["integer", "null"] },
+        leaderId: { type: "integer, null" },
       },
     };
   }

@@ -6,7 +6,7 @@ export class Completion extends Model {
   achievementId!: number;
   status!: string;
   dateRequested!: Date;
-  dateClosed: Date;
+  dateClosed: Date | null;
   img: any;
 
   static get tableName() {
@@ -23,9 +23,11 @@ export class Completion extends Model {
         userId: { type: "integer" },
         achievementId: { type: "integer" },
         status: { type: "string", enum: ["pending", "completed", "rejected"] },
-        dateRequested: { type: "date-time" },
-        dateClosed: { type: ["date-time", "null"] },
-        img: { type: ["binary", "null"] },
+        dateRequested: { type: "integer" },
+        dateClosed: {
+          type: "date-time, null",
+        },
+        img: { type: "binary, null" },
       },
     };
   }
