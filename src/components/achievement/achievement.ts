@@ -37,14 +37,14 @@ export class Achievement extends Model {
           },
           to: "users.id",
         },
-        group: {
-          relation: Model.BelongsToOneRelation,
-          modelClass: Group,
+      },
+      group: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Group,
 
-          join: {
-            from: "achievements.groupId",
-            to: "groups.id",
-          },
+        join: {
+          from: "achievements.groupId",
+          to: "groups.id",
         },
       },
     };
@@ -61,7 +61,6 @@ export class Achievement extends Model {
         category: { type: "string" },
         level: { type: "integer" },
         description: { type: "string" },
-        leaderId: { type: "integer" },
       },
     };
   }
