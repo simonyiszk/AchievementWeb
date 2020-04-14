@@ -2,6 +2,7 @@ import { Model } from "objection";
 
 import { Group } from "../group/group";
 import { Achievement } from "../achievement/achievement";
+import { Completion } from "../completion/completion";
 
 export class User extends Model {
   id!: number;
@@ -29,6 +30,7 @@ export class User extends Model {
         join: {
           from: "users.id",
           through: {
+            modelClass: Completion,
             from: "users_achievements.userId",
             to: "users_achievements.achievementId",
             extra: ["status", "dateRequested", "dateClosed", "img"],
