@@ -6,9 +6,9 @@ import { Completion } from "../completion/completion";
 
 export class User extends Model {
   id!: number;
-  name: string;
-  email: string;
-  authSchId: string;
+  name!: string;
+  email!: string;
+  authSchId!: string;
   admin: boolean;
   achievements: Achievement[];
   leader: Group[];

@@ -6,12 +6,13 @@ import { Completion } from "../completion/completion";
 
 export class Achievement extends Model {
   id!: number;
-  title: string;
-  category: string;
-  level: number;
-  description: string;
+  title!: string;
+  category!: string;
+  level!: number;
+  description!: string;
   users: User[];
   group: Group;
+  groupId!: number;
   status: string;
   dateRequested: Date;
   dateClosed: Date;
@@ -53,7 +54,7 @@ export class Achievement extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["title", "category", "level"],
+      required: ["title", "category", "level", "description", "groupId"],
 
       properties: {
         id: { type: "integer" },
@@ -61,6 +62,7 @@ export class Achievement extends Model {
         category: { type: "string" },
         level: { type: "integer" },
         description: { type: "string" },
+        groupId: { type: "integer" },
       },
     };
   }

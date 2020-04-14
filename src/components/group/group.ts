@@ -5,8 +5,9 @@ import { Achievement } from "../achievement/achievement";
 
 export class Group extends Model {
   id!: number;
-  name: string;
+  name!: string;
   achievements: Achievement[];
+  leader: User;
   leaderId: number | null;
 
   static get tableName() {
@@ -44,7 +45,7 @@ export class Group extends Model {
       properties: {
         id: { type: "integer" },
         name: { type: "string", minLength: 1, maxLength: 255 },
-        leaderId: { type: "integer" },
+        leaderId: { type: ["integer", "null"] },
       },
     };
   }
