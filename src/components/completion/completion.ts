@@ -23,7 +23,7 @@ export class Completion extends Model {
         userId: { type: "integer" },
         achievementId: { type: "integer" },
         status: { type: "string", enum: ["pending", "completed", "rejected"] },
-        dateRequested: { type: "integer" },
+        dateRequested: { type: "date-time" },
         dateClosed: {
           type: "date-time, null",
         },
