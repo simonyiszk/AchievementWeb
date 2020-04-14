@@ -6,6 +6,7 @@ import {
   updateAchievement,
   deleteAchievement,
   requestUpgrade,
+  acceptDeclineUpgrade,
 } from "./achievement.service";
 import { isAuthenticated, isAdmin } from "../../util/authentication";
 
@@ -13,6 +14,24 @@ const router = Router();
 
 // Request upgrade id=AchievementID
 router.post("/:id/request", requestUpgrade, (req, res) => res.json("Success"));
+
+// Accept upgrade request id=GroupID id2=userachiID
+router.post(
+  "/:id/accept/:id2",
+  acceptDeclineUpgrade("completed"),
+  (req, res) => {
+    res.json(req.queriedAchievements);
+  }
+);
+
+// reject upgrade request id=GroupID id2=userachiID
+router.post(
+  "/:id/reject/:id2",
+  acceptDeclineUpgrade("rejected"),
+  (req, res) => {
+    res.json(req.queriedAchievements);
+  }
+);
 
 // View details of an achievement id=AchievementID
 router.get("/:id", getAchievement, (req, res) =>

@@ -4,6 +4,7 @@ import createError from "http-errors";
 import { Achievement } from "./achievement";
 import { Group } from "../group/group";
 import { User } from "../user/user";
+import { Completion } from "../completion/completion";
 
 export const getAchievement = async (
   req: Request,
@@ -114,4 +115,34 @@ export const requestUpgrade = async (
     });
     next();
   }
+};
+
+export const acceptDeclineUpgrade = (newStatus: "completed" | "rejected") => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    //TODO check if achi is connected with request group
+    const user_achievement = await Completion.query().findOne({
+      id: parseInt(req.params.id2),
+    });
+    if (!user_achievement) {
+      next(createError(404));
+    } else if (user_achievement.status !== "pending") {
+      next(createError(400));
+    } else {
+      const achievement = await Achievement.query().findOne({
+        id: user_achievement.achievementId,
+      });
+      if (achievement.groupId !== parseInt(req.params.id)) {
+        next(createError(403));
+      } else {
+        await Completion.transaction(async (trx) => {
+          return await user_achievement
+            .$query(trx)
+            .patch({ status: newStatus, dateClosed: new Date() });
+        });
+        const all = await Completion.query();
+        req.queriedAchievements = all as any;
+        next();
+      }
+    }
+  };
 };
