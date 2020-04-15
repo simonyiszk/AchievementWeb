@@ -1,22 +1,22 @@
 - name: AC Stúdió & Live
-  img: ../assets/groups/ac.svg
+  img: static/groups/ac.svg
 - name: Budavári Schönherz Stúdió
-  img: ../assets/groups/bss.svg
+  img: static/groups/bss.svg
 - name: HA5KFU
-  img: ../assets/groups/ha5kfu.svg
+  img: static/groups/ha5kfu.svg
 - name: Kir-Dev
-  img: ../assets/groups/kirdev.svg
+  img: static/groups/kirdev.svg
 - name: LEGO Kör
-  img: ../assets/groups/lego.svg
+  img: static/groups/lego.svg
 - name: Menedzsment Kör
-  img: ../assets/groups/ac.svg
+  img: static/groups/ac.svg
 - name: Schönherz Design Stúdió
-  img: ../assets/groups/schdesign.svg
+  img: static/groups/schdesign.svg
 - name: Schönherz Elektronikai Műhely
-  img: ../assets/groups/sem.svg
+  img: static/groups/sem.svg
 - name: SPOT Fotókör
-  img: ../assets/groups/spot.svg
+  img: static/groups/spot.svg
 - name: Simonyi Károly Szakkollégium
-  img: ../assets/groups/ac.svg
+  img: static/groups/ac.svg
 - name: Simonyi Konferencia
-  img: ../assets/groups/ac.svg
+  img: static/groups/ac.svg
