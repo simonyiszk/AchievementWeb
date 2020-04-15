@@ -10,6 +10,7 @@ function Header(): JSX.Element {
       <Image
         display={['none', null, 'block']}
         height="3rem"
+        m={-2}
         src={logo}
         alt="Logo"
       />
