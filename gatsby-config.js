@@ -23,5 +23,9 @@ module.exports = {
     },
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-typescript',
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/group/*`] },
+    },
   ],
 };
