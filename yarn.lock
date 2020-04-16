@@ -1709,7 +1709,7 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
-"@types/reach__router@^1.3.3":
+"@types/reach__router@^1.3.3", "@types/reach__router@^1.3.4":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@types/reach__router/-/reach__router-1.3.4.tgz#98ef393d06f59d296b5c021ba94b94e5fc463245"
   integrity sha512-DZgYfxUIlVSjvf0AvBbYNbpXLrTFNNpU1HrvCRbnMtx3nvGUUWC1/zlAe4dD4FCPFtc+LQuIPEsDiTb0zQkthg==
@@ -5801,6 +5801,13 @@ gatsby-plugin-chakra-ui@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-chakra-ui/-/gatsby-plugin-chakra-ui-0.1.4.tgz#2e8fcb85fa75b5adc4265a937766b47a4717900d"
   integrity sha512-RofWX5ytqB7UDGQfTflXmeHOgqLXvZj4TnDE8JZyHNWiYR0vJGxM/UXBdGzC/fBwcfZWG3FUUAONk0znlUY/OQ==
+
+gatsby-plugin-create-client-paths@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-create-client-paths/-/gatsby-plugin-create-client-paths-2.2.1.tgz#6d34aa2b3c153445feb21a03da9d9c3fe2aae72f"
+  integrity sha512-IY7fI3Gr8oufOUVwCqVdoxmh2C+qbTWqPsn0TTgm0LY1rRXagd3n+c0EBxftazNLq4A669fRJpxkGlpIJVqBCA==
+  dependencies:
+    "@babel/runtime" "^7.8.7"
 
 gatsby-plugin-emotion@^4.2.0:
   version "4.2.1"
