@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from '@chakra-ui/core';
+import { Flex, Image } from '@chakra-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -7,7 +7,13 @@ interface Group {
   img: string;
 }
 
-function MainGroupBox({ group }: { group: Group }): JSX.Element {
+function MainGroupBox({
+  group,
+  onClick,
+}: {
+  group: Group;
+  onClick: (name: string) => void;
+}): JSX.Element {
   return (
     <Flex
       justify="center"
@@ -19,6 +25,7 @@ function MainGroupBox({ group }: { group: Group }): JSX.Element {
       border="solid 1px rgba(0, 0, 0, 0.05)"
       cursor="pointer"
       boxShadow="0px 4px 12px rgba(0, 0, 0, 0.1)"
+      onClick={(): void => onClick(group.name)}
     >
       <Image height="100%" src={group.img} />
     </Flex>
@@ -28,6 +35,7 @@ function MainGroupBox({ group }: { group: Group }): JSX.Element {
 MainGroupBox.propTypes = {
   group: PropTypes.shape({ name: PropTypes.string, img: PropTypes.string })
     .isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default MainGroupBox;
