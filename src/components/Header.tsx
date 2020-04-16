@@ -4,7 +4,7 @@ import React from 'react';
 import logoSmall from '../assets/simonyi_white_small.svg';
 import logo from '../assets/simonyi_white_white.svg';
 
-function Header(): JSX.Element {
+export default function Header(): JSX.Element {
   return (
     <Box p={1} backgroundColor="simonyi">
       <Image
@@ -24,5 +24,3 @@ function Header(): JSX.Element {
     </Box>
   );
 }
-
-export default Header;
