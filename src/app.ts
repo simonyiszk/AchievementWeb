@@ -10,6 +10,7 @@ import fetch from "node-fetch";
 import passport from "passport";
 import { Strategy } from "passport-oauth2";
 import dotenv from "dotenv";
+import cors from "cors";
 const dbConfig = require("../knexfile");
 
 import { User } from "./components/user/user";
@@ -42,6 +43,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cors());
 
 passport.use(
   new Strategy(
