@@ -15,16 +15,6 @@ interface GroupIds {
 }
 
 export default function IndexPage(): JSX.Element {
-  const [groupIds, setGroupIds] = useState<GroupIds>({});
-
-  useEffect(() => {
-    const newGroupIds = data.reduce((acc: GroupIds, curr: GroupData) => {
-      acc[curr.name] = curr.id;
-      return acc;
-    }, {});
-    setGroupIds(newGroupIds);
-  }, []);
-
   return (
     <Layout>
       <Flex flexWrap="wrap" justify="center">
