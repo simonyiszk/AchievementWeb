@@ -37,6 +37,7 @@ export const createAchievement = async (
     const newAchievement = await Achievement.transaction(async (trx) => {
       return await group.$relatedQuery("achievements", trx).insert({
         ...achievement,
+        groupId: parseInt(req.params.id),
         id: undefined,
       });
     });
