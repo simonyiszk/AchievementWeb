@@ -19,7 +19,7 @@ export default function IndexPage(): JSX.Element {
     <Layout>
       <Flex flexWrap="wrap" justify="center">
         {data.map((group: GroupData) => (
-          <MainGroupBox key={group.name} group={group} />
+          <MainGroupBox key={group.id} group={group} />
         ))}
       </Flex>
     </Layout>
