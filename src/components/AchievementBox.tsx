@@ -14,13 +14,17 @@ interface Achievement {
 
 interface Props {
   achievement: Achievement;
+  withText?: boolean;
 }
 
 const generateLevel = (): number => {
   return Math.floor(Math.random() * 5) + 1; // TODO: Delete this
 };
 
-export default function AchievementBox({ achievement }: Props): JSX.Element {
+export default function AchievementBox({
+  achievement,
+  withText = true,
+}: Props): JSX.Element {
   return (
     <Flex m={4} flexDirection="column">
       <Link to={`/achievement/${achievement.id}`}>
@@ -41,9 +45,11 @@ export default function AchievementBox({ achievement }: Props): JSX.Element {
           </Box>
         </Flex>
       </Link>
-      <Flex justify="center" mt={2}>
-        {achievement.title}
-      </Flex>
+      {withText && (
+        <Flex justify="center" mt={2}>
+          {achievement.title}
+        </Flex>
+      )}
     </Flex>
   );
 }
