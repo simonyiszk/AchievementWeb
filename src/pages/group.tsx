@@ -1,8 +1,8 @@
 import { Router } from '@reach/router';
 import React from 'react';
 
-import ManageGroupPage from '../pages-dynamic/manage';
-import ShowGroupPage from '../pages-dynamic/show';
+import ManageGroupPage from '../pages-dynamic/managegroup';
+import ShowGroupPage from '../pages-dynamic/showgroup';
 import NotFoundPage from './404';
 
 export default function GroupPage(): JSX.Element {

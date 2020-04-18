@@ -26,7 +26,7 @@ interface Props extends RouteComponentProps {
   id?: string;
 }
 
-function ShowGroupPage({ id }: Props): JSX.Element {
+export default function ShowGroupPage({ id }: Props): JSX.Element {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userlevels, setUserlevels] = useState<UserLevel[]>([]);
 
@@ -64,7 +64,3 @@ function ShowGroupPage({ id }: Props): JSX.Element {
     </Layout>
   );
 }
-
-ShowGroupPage.propTypes = {};
-
-export default ShowGroupPage;

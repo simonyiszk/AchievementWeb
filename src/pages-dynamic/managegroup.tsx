@@ -8,7 +8,7 @@ interface Props extends RouteComponentProps {
   id?: string;
 }
 
-function ManageGroupPage({ id }: Props): JSX.Element {
+export default function ManageGroupPage({ id }: Props): JSX.Element {
   useEffect(() => {
     console.log(id);
   });
@@ -18,7 +18,3 @@ function ManageGroupPage({ id }: Props): JSX.Element {
     </Layout>
   );
 }
-
-ManageGroupPage.propTypes = {};
-
-export default ManageGroupPage;
