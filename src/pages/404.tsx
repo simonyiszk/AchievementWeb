@@ -1,9 +1,11 @@
+import { RouteComponentProps } from '@reach/router';
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
 import { Layout } from '../components/Layout';
 
-export default function NotFoundPage(): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function NotFoundPage(_props: RouteComponentProps): JSX.Element {
   return (
     <Layout>
       <Helmet>

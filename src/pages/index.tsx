@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/core';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Layout } from '../components/Layout';
 import MainGroupBox from '../components/MainGroupBox';
@@ -9,9 +9,6 @@ interface GroupData {
   id: number;
   name: string;
   img: string;
-}
-interface GroupIds {
-  [key: string]: number;
 }
 
 export default function IndexPage(): JSX.Element {
