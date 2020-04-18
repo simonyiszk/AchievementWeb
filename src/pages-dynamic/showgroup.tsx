@@ -13,6 +13,7 @@ interface Achievement {
   title: string;
   category: 'szakmai' | 'kozossegi';
   level: number;
+  description: string;
 }
 interface UserLevel {
   id: number;
@@ -29,7 +30,7 @@ interface GroupData {
 }
 
 interface Props extends RouteComponentProps {
-  id: string;
+  id?: string;
 }
 
 export default function ShowGroupPage({ id }: Props): JSX.Element {
@@ -49,9 +50,10 @@ export default function ShowGroupPage({ id }: Props): JSX.Element {
       // eslint-disable-next-line no-console
       .catch((err) => console.log('error', err));
   }, [id]);
-  const groupName = (groupId: string): string => {
-    return groupData.filter((group: GroupData) => group.id === +groupId)[0]
-      .name;
+  const groupName = (groupId?: string): string => {
+    return groupId
+      ? groupData.filter((group: GroupData) => group.id === +groupId)[0].name
+      : '';
   };
   return (
     <Layout>
