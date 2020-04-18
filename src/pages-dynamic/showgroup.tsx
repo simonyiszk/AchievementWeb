@@ -73,6 +73,7 @@ export default function ShowGroupPage({ id }: Props): JSX.Element {
                   <AchievementBox
                     key={achievement.id}
                     achievement={achievement}
+                    m={4}
                   />
                 ))}
             </Flex>

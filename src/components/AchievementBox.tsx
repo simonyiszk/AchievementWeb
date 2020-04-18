@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from '@chakra-ui/core';
+import { Box, BoxProps, Flex, Image } from '@chakra-ui/core';
 import { Link } from 'gatsby';
 import React from 'react';
 
@@ -12,7 +12,7 @@ interface Achievement {
   level: number;
 }
 
-interface Props {
+interface Props extends BoxProps {
   achievement: Achievement;
   withText?: boolean;
 }
@@ -24,9 +24,10 @@ const generateLevel = (): number => {
 export default function AchievementBox({
   achievement,
   withText = true,
+  ...props
 }: Props): JSX.Element {
   return (
-    <Flex m={4} flexDirection="column">
+    <Flex {...props} flexDirection="column">
       <Link to={`/achievement/${achievement.id}`}>
         <Flex
           position="relative"
