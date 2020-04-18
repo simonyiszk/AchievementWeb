@@ -57,7 +57,9 @@ export default function ShowGroupPage({ id }: Props): JSX.Element {
   };
   return (
     <Layout>
-      <Heading mb={4}>{groupName(id)}</Heading>
+      <Heading as="h1" mb={4}>
+        {groupName(id)}
+      </Heading>
       {texts.levels.map((level: LevelText) => {
         return (
           <Box key={level.level}>
