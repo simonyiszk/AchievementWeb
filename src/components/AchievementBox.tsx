@@ -1,8 +1,9 @@
-import { Flex, Image } from '@chakra-ui/core';
+import { Box, Flex, Image } from '@chakra-ui/core';
 import { Link } from 'gatsby';
 import React from 'react';
 
 import img from '../assets/groups/schdesign.svg';
+import StarBox from './StarBox';
 
 interface Achievement {
   id: number;
@@ -15,21 +16,29 @@ interface Props {
   achievement: Achievement;
 }
 
+const generateLevel = (): number => {
+  return Math.floor(Math.random() * 5) + 1; // TODO: Delete this
+};
+
 export default function AchievementBox({ achievement }: Props): JSX.Element {
   return (
     <Flex m={4} flexDirection="column">
       <Link to={`/achievement/${achievement.id}`}>
         <Flex
+          position="relative"
           justify="center"
           alignItems="center"
           p={4}
-          height="10rem"
-          width="10rem"
-          borderRadius="10rem"
+          height="7rem"
+          width="7rem"
+          borderRadius="7rem"
           border="solid 1px rgba(0, 0, 0, 0.05)"
           boxShadow="0px 4px 12px rgba(0, 0, 0, 0.1)"
         >
           <Image height="100%" src={img} />
+          <Box position="absolute" bottom="-0.5rem">
+            <StarBox level={generateLevel()} />
+          </Box>
         </Flex>
       </Link>
       <Flex justify="center" mt={2}>
