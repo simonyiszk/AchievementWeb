@@ -30,6 +30,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0-beta.2",
+    "react-images-upload": "^1.2.8",
     "typescript": "^3.8.3"
   },
   "devDependencies": {

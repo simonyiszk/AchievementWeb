@@ -3,7 +3,6 @@ import {
   Button,
   Flex,
   Heading,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -17,6 +16,7 @@ import { RouteComponentProps } from '@reach/router';
 import React, { useEffect, useState } from 'react';
 
 import AchievementBox from '../components/AchievementBox';
+import FileUploader from '../components/FileUploader';
 import { Layout } from '../components/Layout';
 import LevelupIcon from '../components/LevelupIcon';
 import consts from '../data/consts.yml';
@@ -43,6 +43,7 @@ interface Props extends RouteComponentProps {
 export default function ShowAchievementPage({ id }: Props): JSX.Element {
   const [achievement, setAchievement] = useState<Achievement>();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [pictures, setPictures] = useState<File[]>([]);
 
   useEffect(() => {
     fetch(`${consts.root_url}/achievement/${id}`, {
@@ -61,9 +62,14 @@ export default function ShowAchievementPage({ id }: Props): JSX.Element {
     return groupData.filter((group: GroupData) => group.id === groupId)[0].name;
   };
 
-  const handleUpgradeClick = () => {
+  const handleUpgradeClick = (): void => {
     console.log('a');
+    console.log(pictures);
     onOpen();
+  };
+
+  const onDrop = (picture: File[]): void => {
+    setPictures(picture);
   };
 
   return (
@@ -117,9 +123,9 @@ export default function ShowAchievementPage({ id }: Props): JSX.Element {
 
           <ModalFooter
             justifyContent={['center', null, 'space-between']}
-            flexDirection={['column', null, 'row']}
+            flexDirection="column"
           >
-            <Input type="file" />
+            <FileUploader onChange={onDrop} />
             <Button variantColor="green" onClick={handleUpgradeClick}>
               Küldés
             </Button>
