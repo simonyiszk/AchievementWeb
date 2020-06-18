@@ -17,6 +17,7 @@ const router = Router();
 // Get a group with achievements id="GroupID"
 router.get("/:id", getGroup, (req, res) =>
   res.json({
+    groupName: req.queriedGroup.name,
     allAchievements: req.queriedAchievements,
     userAchievementLevels: req.queriedUserAchievements,
   })

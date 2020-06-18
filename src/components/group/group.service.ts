@@ -36,6 +36,7 @@ export const getGroup = async (
       .groupBy("achievements.id");
     req.queriedAchievements = groupAchievements;
     req.queriedUserAchievements = userAchievements;
+    req.queriedGroup = group;
     next();
   }
 };
