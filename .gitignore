@@ -41,3 +41,5 @@ Thumbs.db
 /apps/frontend/node_modules
 /apps/frontend/public
 /apps/frontend/.cache
+
+*.db
