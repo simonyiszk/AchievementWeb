@@ -2,3 +2,7 @@
 
 /dist
 /coverage
+
+/apps/frontend/node_modules
+/apps/frontend/public
+/apps/frontend/.cache
