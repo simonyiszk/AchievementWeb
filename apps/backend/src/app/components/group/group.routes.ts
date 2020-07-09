@@ -1,21 +1,21 @@
-import { Router } from "express";
+import { Router } from 'express';
 
 import {
   getAllGroup,
   getGroup,
   manageGroup,
   updateGroup,
-} from "./group.service";
+} from './group.service';
 import {
   isAuthenticated,
   isAdmin,
   isAdminOrGroupLead,
-} from "../../util/authentication";
+} from '../../util/authentication';
 
 const router = Router();
 
 // Get a group with achievements id="GroupID"
-router.get("/:id", getGroup, (req, res) =>
+router.get('/:groupid', isAuthenticated, getGroup, (req, res) =>
   res.json({
     groupName: req.queriedGroup.name,
     allAchievements: req.queriedAchievements,
@@ -24,12 +24,16 @@ router.get("/:id", getGroup, (req, res) =>
 );
 
 // Get a group with achievements id="GroupID"
-router.get("/:id/manage", manageGroup, (req, res) =>
-  res.json(req.queriedUsers)
+router.get(
+  '/:groupid/manage',
+  isAuthenticated,
+  //isAdminOrGroupLead,
+  manageGroup,
+  (req, res) => res.json(req.queriedUsers)
 );
 
 // List all groups
-router.get("/", getAllGroup, (req, res) => {
+router.get('/', getAllGroup, (req, res) => {
   const response = req.queriedGroups.map(({ id, name, ...rest }) => ({
     id,
     name,
@@ -38,7 +42,7 @@ router.get("/", getAllGroup, (req, res) => {
 });
 
 // Update group id=GroupID
-router.put("/:id", updateGroup, (req, res) => {
+router.put('/:groupid', isAuthenticated, isAdmin, updateGroup, (req, res) => {
   res.json(req.queriedGroup);
 });
 

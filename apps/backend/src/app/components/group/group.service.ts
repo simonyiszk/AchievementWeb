@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from "express";
-import createError from "http-errors";
+import { Request, Response, NextFunction } from 'express';
+import createError from 'http-errors';
 
-import { Group } from "./group";
-import { User } from "../user/user";
+import { Group } from './group';
+import { User } from '../user/user';
 
 export const getAllGroup = async (
   req: Request,
@@ -19,21 +19,23 @@ export const getGroup = async (
   res: Response,
   next: NextFunction
 ) => {
-  const group = await Group.query().findOne({ id: parseInt(req.params.id) });
-  const user = await User.query().findOne({ id: 1 /*(req.user as User)?.id*/ });
+  const group = await Group.query().findOne({
+    id: parseInt(req.params.groupid),
+  });
+  const user = await User.query().findOne({ id: 1 /*(req.user as User)?.id*/ }); //TODO: add correct ID
 
   if (!group || !user) {
     next(createError(404));
   } else {
-    const groupAchievements = await Group.relatedQuery("achievements").for(
+    const groupAchievements = await Group.relatedQuery('achievements').for(
       group.id
     );
-    const userAchievements = await User.relatedQuery("achievements")
+    const userAchievements = await User.relatedQuery('achievements')
       .for(user.id)
-      .where({ groupId: group.id, status: "completed" })
-      .select("achievements.id")
-      .count("* as level")
-      .groupBy("achievements.id");
+      .where({ groupId: group.id, status: 'completed' })
+      .select('achievements.id')
+      .count('* as level')
+      .groupBy('achievements.id');
     req.queriedAchievements = groupAchievements;
     req.queriedUserAchievements = userAchievements;
     req.queriedGroup = group;
@@ -46,20 +48,22 @@ export const manageGroup = async (
   res: Response,
   next: NextFunction
 ) => {
-  const group = await Group.query().findOne({ id: parseInt(req.params.id) });
+  const group = await Group.query().findOne({
+    id: parseInt(req.params.groupid),
+  });
 
   if (!group) {
     next(createError(404));
   } else {
     const pendingUsers = await User.query()
-      .joinRelated("achievements")
+      .joinRelated('achievements')
       .select(
-        "achievements_join.id",
-        "users.name",
-        "achievements.title",
-        "dateRequested"
+        'achievements_join.id',
+        'users.name',
+        'achievements.title',
+        'dateRequested'
       )
-      .where({ groupId: group.id, status: "pending" });
+      .where({ groupId: group.id, status: 'pending' });
     req.queriedUsers = pendingUsers;
     next();
   }
@@ -71,7 +75,7 @@ export const updateGroup = async (
   next: NextFunction
 ) => {
   const group = await Group.query().findOne({
-    id: parseInt(req.params.id),
+    id: parseInt(req.params.groupid),
   });
 
   if (!group) {
@@ -79,11 +83,14 @@ export const updateGroup = async (
   } else {
     const groupData = req.body.group;
     const newGroup = await Group.transaction(async (trx) => {
-      return await Group.query(trx).patchAndFetchById(parseInt(req.params.id), {
-        //TODO: handle wrong keys in request, and validation errors
-        ...groupData,
-        id: parseInt(req.params.id),
-      });
+      return await Group.query(trx).patchAndFetchById(
+        parseInt(req.params.groupid),
+        {
+          //TODO: handle wrong keys in request, and validation errors
+          ...groupData,
+          id: parseInt(req.params.groupid),
+        }
+      );
     });
     req.queriedGroup = newGroup;
     next();

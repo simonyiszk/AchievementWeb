@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from "express";
-import createError from "http-errors";
+import { Request, Response, NextFunction } from 'express';
+import createError from 'http-errors';
 
-import { User } from "./user";
-import { Group } from "../group/group";
+import { User } from './user';
+import { Group } from '../group/group';
 
-import groupnames from "../../util/groupnames.json";
+import groupnames from '../../util/groupnames.json';
 
 interface OAuthUserGroups {
   id: number;
@@ -36,7 +36,7 @@ export const getUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = await User.query().findOne({ id: parseInt(req.params.id) });
+  const user = await User.query().findOne({ id: parseInt(req.params.userid) });
 
   if (!user) {
     next(createError(404));
@@ -51,7 +51,7 @@ export const toggleAdmin = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = await User.query().findOne({ id: parseInt(req.params.id) });
+  const user = await User.query().findOne({ id: parseInt(req.params.userid) });
 
   if (!user) {
     next(createError(404));
@@ -75,11 +75,11 @@ export const createUser = async (user: OAuthUser) => {
 export const updateLeader = async (user: User, groups: OAuthUserGroups[]) => {
   const ledGroupNames = groups
     .filter((group) => groupnames.names.indexOf(group.name) > -1)
-    .filter((group) => group.end === null)
+    .filter((group) => group.end === null) //TODO: change it to allow not active groups but led groups
     .map((group) => group.name);
   if (ledGroupNames.length > 0) {
     await Group.query()
-      .whereIn("name", ledGroupNames)
+      .whereIn('name', ledGroupNames)
       .patch({ leaderId: user.id });
   }
 };
