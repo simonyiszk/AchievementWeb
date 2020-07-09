@@ -58,6 +58,8 @@ export const updateAchievement = async (
 
   if (!achievement) {
     next(createError(404));
+  } else if (achievement.groupId != parseInt(req.params.groupid)) {
+    next(createError(403));
   } else {
     const achievementData = req.body.achievement;
     const newAchievement = await Achievement.transaction(async (trx) => {
@@ -84,6 +86,8 @@ export const deleteAchievement = async (
 
   if (!achievement) {
     next(createError(404));
+  } else if (achievement.groupId != parseInt(req.params.groupid)) {
+    next(createError(403));
   } else {
     await Achievement.transaction(async (trx) => {
       return await Achievement.query(trx)
@@ -142,9 +146,6 @@ export const acceptDeclineUpgrade = (newStatus: 'completed' | 'rejected') => {
             .$query(trx)
             .patch({ status: newStatus, dateClosed: new Date() });
         });
-        const all = await Completion.query();
-        req.queriedAchievements = all as any;
-        next();
       }
     }
   };

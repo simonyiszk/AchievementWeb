@@ -8,12 +8,7 @@ import {
   requestUpgrade,
   acceptDeclineUpgrade,
 } from './achievement.service';
-import {
-  isAuthenticated,
-  isAdminOrGroupLead,
-  checkGroupByAchiid,
-  checkGroupByUserAchiid,
-} from '../../util/authentication';
+import { isAuthenticated, isAdminOrGroupLead } from '../../util/authentication';
 
 const router = Router();
 
@@ -43,7 +38,6 @@ router.post(
   '/:groupid/:userachiid/accept',
   isAuthenticated,
   isAdminOrGroupLead,
-  checkGroupByUserAchiid,
   acceptDeclineUpgrade('completed'),
   (req, res) => {
     res.json(req.queriedAchievements);
@@ -55,7 +49,6 @@ router.post(
   '/:groupid/:userachiid/reject',
   isAuthenticated,
   isAdminOrGroupLead,
-  checkGroupByUserAchiid,
   acceptDeclineUpgrade('rejected'),
   (req, res) => {
     res.json(req.queriedAchievements);
@@ -67,7 +60,6 @@ router.put(
   '/:groupid/:achiid',
   isAuthenticated,
   isAdminOrGroupLead,
-  checkGroupByAchiid,
   updateAchievement,
   (req, res) => {
     res.json(req.queriedAchievement);
@@ -79,7 +71,6 @@ router.delete(
   '/:groupid/:achiid',
   isAuthenticated,
   isAdminOrGroupLead,
-  checkGroupByAchiid,
   deleteAchievement,
   (req, res) => {
     res.json('Success');
