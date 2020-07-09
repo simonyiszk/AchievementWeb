@@ -106,7 +106,7 @@ export const requestUpgrade = async (
   if (!achievement || !user) {
     next(createError(404));
   } else {
-    const joined = await Achievement.transaction(async (trx) => {
+    await Achievement.transaction(async (trx) => {
       return await Achievement.relatedQuery('users', trx)
         .for(achievement.id)
         .relate({
@@ -123,22 +123,22 @@ export const requestUpgrade = async (
 export const acceptDeclineUpgrade = (newStatus: 'completed' | 'rejected') => {
   return async (req: Request, res: Response, next: NextFunction) => {
     //TODO check if achi is connected with request group
-    const user_achievement = await Completion.query().findOne({
+    const userAchievement = await Completion.query().findOne({
       id: parseInt(req.params.userachiid),
     });
-    if (!user_achievement) {
+    if (!userAchievement) {
       next(createError(404));
-    } else if (user_achievement.status !== 'pending') {
+    } else if (userAchievement.status !== 'pending') {
       next(createError(400));
     } else {
       const achievement = await Achievement.query().findOne({
-        id: user_achievement.achievementId,
+        id: userAchievement.achievementId,
       });
       if (achievement.groupId !== parseInt(req.params.groupid)) {
         next(createError(403));
       } else {
         await Completion.transaction(async (trx) => {
-          return await user_achievement
+          return await userAchievement
             .$query(trx)
             .patch({ status: newStatus, dateClosed: new Date() });
         });
