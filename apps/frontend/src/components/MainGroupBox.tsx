@@ -5,14 +5,18 @@ import React from 'react';
 interface Group {
   id: number;
   name: string;
-  img: string;
+  shortname: string;
 }
 
 interface Props {
   group: Group;
+  groupImage: string;
 }
 
-export default function MainGroupBox({ group }: Props): JSX.Element {
+export default function MainGroupBox({
+  group,
+  groupImage,
+}: Props): JSX.Element {
   return (
     <Flex m={4}>
       <Link to={`/group/${group.id}`}>
@@ -25,7 +29,7 @@ export default function MainGroupBox({ group }: Props): JSX.Element {
           border="solid 1px rgba(0, 0, 0, 0.05)"
           boxShadow="0px 4px 12px rgba(0, 0, 0, 0.1)"
         >
-          <Image height="100%" src={group.img} />
+          <Image height="100%" src={groupImage} />
         </Flex>
       </Link>
     </Flex>
