@@ -8,8 +8,10 @@ import logger from 'morgan';
 import fetch from 'node-fetch';
 import passport from 'passport';
 import { Strategy } from 'passport-oauth2';
+import { Strategy as JwtStrategy } from 'passport-jwt';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import jsonwebtoken from 'jsonwebtoken';
 const dbConfig = require('../../knexfile');
 
 import { User } from './components/user/user';
@@ -41,6 +43,36 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
+
+// main authentication, our app will rely on it
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: function (req) {
+        // tell passport to read JWT from cookies
+        let token = null;
+        if (req && req.cookies) {
+          token = req.cookies[process.env.JWT_COOKIE_NAME];
+        }
+        return token;
+      },
+      secretOrKey: process.env.JWT_SECRET_KEY,
+    },
+    async function (jwtPayload, done) {
+      //console.log('JWT BASED AUTH GETTING CALLED'); // called everytime a protected URL is being served
+      const user = await User.query().findOne({
+        authSchId: jwtPayload.data,
+      });
+
+      if (user) {
+        return done(null, user);
+      } else {
+        // user account doesnt exists in the DATA
+        return done(null, false);
+      }
+    }
+  )
+);
 
 passport.use(
   new Strategy(
@@ -90,7 +122,19 @@ app.get('/login', passport.authenticate('oauth2'));
 app.get(
   '/auth/oauth/callback',
   passport.authenticate('oauth2', { failureRedirect: '/' }),
-  (req, res) => res.redirect(req.session.returnTo || '/')
+  (req, res) => {
+    const user = req.user;
+    const token = jsonwebtoken.sign(
+      {
+        data: user['authSchId'],
+      },
+      process.env.JWT_SECRET_KEY
+    );
+    res.cookie(process.env.JWT_COOKIE_NAME, token, {
+      maxAge: 2 * 60 * 60 * 1000,
+    });
+    res.redirect(process.env.FRONTEND_URL);
+  }
 );
 
 app.use('/', (req, res, next) => res.send('Hello'));
