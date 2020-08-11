@@ -40,6 +40,7 @@ export default function ShowGroupPage({ id }: Props): JSX.Element {
   useEffect(() => {
     fetch(`${consts.root_url}/groups/${id}`, {
       mode: 'cors',
+      credentials: 'include',
     })
       .then((res) => res.json())
       .then((res) => {

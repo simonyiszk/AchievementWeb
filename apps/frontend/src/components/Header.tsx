@@ -1,6 +1,9 @@
-import { Box, Image } from '@chakra-ui/core';
+import { Box, Image, Link as ChakraLink } from '@chakra-ui/core';
 import { Link } from 'gatsby';
 import React from 'react';
+
+import consts from '../data/consts.yml';
+import { isLoggedIn, logout } from '../services/auth';
 
 import logoSmall from '../images/simonyi_white_small.svg';
 import logo from '../images/simonyi_white_white.svg';
@@ -24,6 +27,16 @@ export default function Header(): JSX.Element {
           alt="Logo"
         />
       </Link>
+      <Box>
+        {!isLoggedIn() && (
+          <ChakraLink href={`${consts.root_url}/login`}>LOGIN</ChakraLink>
+        )}
+        {isLoggedIn() && (
+          <Link to="/" onClick={(e) => logout()}>
+            LOGOUT
+          </Link>
+        )}
+      </Box>
     </Box>
   );
 }
