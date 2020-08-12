@@ -41,7 +41,7 @@ app.use(
   })
 );
 app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.session());
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -119,10 +119,6 @@ passport.deserializeUser(async (id: any, done) => {
   done(null, user);
 });
 
-app.use('/users', userRouter);
-app.use('/groups', groupRouter);
-app.use('/achievement', achievementRouter);
-
 app.get('/login', passport.authenticate('oauth2'));
 app.get(
   '/auth/oauth/callback',
@@ -141,6 +137,11 @@ app.get(
     res.redirect(process.env.FRONTEND_URL);
   }
 );
+
+app.use(passport.authenticate('jwt', { session: false }));
+app.use('/users', userRouter);
+app.use('/groups', groupRouter);
+app.use('/achievement', achievementRouter);
 
 app.use('/', (req, res, next) => res.send('Hello'));
 
