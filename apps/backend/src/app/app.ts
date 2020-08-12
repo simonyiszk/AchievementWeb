@@ -123,7 +123,7 @@ app.get('/login', passport.authenticate('oauth2'));
 app.get(
   '/auth/oauth/callback',
   passport.authenticate('oauth2', { failureRedirect: '/' }),
-  (req, res) => {
+  async (req, res) => {
     const user = req.user;
     const token = jsonwebtoken.sign(
       {
@@ -132,6 +132,18 @@ app.get(
       process.env.JWT_SECRET_KEY
     );
     res.cookie(process.env.JWT_COOKIE_NAME, token, {
+      maxAge: 2 * 60 * 60 * 1000,
+    });
+    console.log(user);
+    const groupIds = (
+      await User.relatedQuery('leader')
+        .for((user as User)?.id)
+        .select('id')
+    ).reduce(
+      (acc, curr) => [...acc, curr.id],
+      (user as User)?.admin ? [0] : []
+    );
+    res.cookie(process.env.ROLE_COOKIE_NAME, groupIds.toString(), {
       maxAge: 2 * 60 * 60 * 1000,
     });
     res.redirect(process.env.FRONTEND_URL);
