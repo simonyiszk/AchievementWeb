@@ -27,7 +27,7 @@ router.get('/:groupid', isAuthenticated, getGroup, (req, res) =>
 router.get(
   '/:groupid/manage',
   isAuthenticated,
-  //isAdminOrGroupLead,
+  //isAdminOrGroupLead, //TODO: remove comments
   manageGroup,
   (req, res) => res.json(req.queriedUsers)
 );
