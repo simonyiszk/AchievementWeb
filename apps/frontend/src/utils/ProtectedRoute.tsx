@@ -20,13 +20,12 @@ export default function ProtectedRoute({
   return (
     <RoleConsumer>
       {(roles) => {
-        const adminFlag = !admin || (admin && isAdmin(roles));
-        const roleFlag =
-          groupLeads.length === 0 ||
-          groupLeads.reduce((acc: boolean, curr: number) => {
-            return acc && isGroupLead(roles, curr);
-          }, true);
-        const canRender = adminFlag && roleFlag;
+        const adminFlag = admin && isAdmin(roles);
+        const roleFlag = groupLeads.reduce((acc: boolean, curr: number) => {
+          return acc && isGroupLead(roles, curr);
+        }, true);
+        const noFlag = !admin && groupLeads.length === 0;
+        const canRender = adminFlag || roleFlag || noFlag;
 
         if (!canRender) {
           navigate('/', { replace: true });
