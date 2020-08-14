@@ -3,7 +3,7 @@ import { Link } from 'gatsby';
 import React from 'react';
 
 import consts from '../data/consts.yml';
-import { isLoggedIn, logout } from '../services/auth';
+import { isLoggedIn, logout } from '../utils/auth';
 
 import logoSmall from '../images/simonyi_white_small.svg';
 import logo from '../images/simonyi_white_white.svg';
