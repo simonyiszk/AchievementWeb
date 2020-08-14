@@ -4,6 +4,8 @@ import { useStaticQuery, graphql } from 'gatsby';
 
 import { Layout } from '../components/Layout';
 import MainGroupBox from '../components/MainGroupBox';
+import { RoleProvider } from '../utils/RoleContext';
+
 import data from '../data/groups.yml';
 
 interface GroupData {
@@ -35,16 +37,18 @@ export default function IndexPage(): JSX.Element {
   }, {});
 
   return (
-    <Layout>
-      <Flex flexWrap="wrap" justify="center">
-        {data.map((group: GroupData) => (
-          <MainGroupBox
-            key={group.id}
-            group={group}
-            groupImage={dataImage[group.shortname]}
-          />
-        ))}
-      </Flex>
-    </Layout>
+    <RoleProvider>
+      <Layout>
+        <Flex flexWrap="wrap" justify="center">
+          {data.map((group: GroupData) => (
+            <MainGroupBox
+              key={group.id}
+              group={group}
+              groupImage={dataImage[group.shortname]}
+            />
+          ))}
+        </Flex>
+      </Layout>
+    </RoleProvider>
   );
 }
