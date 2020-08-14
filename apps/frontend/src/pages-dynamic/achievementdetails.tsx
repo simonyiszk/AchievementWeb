@@ -48,6 +48,7 @@ export default function ShowAchievementPage({ id }: Props): JSX.Element {
   useEffect(() => {
     fetch(`${consts.root_url}/achievement/${id}`, {
       mode: 'cors',
+      credentials: 'include',
     })
       .then((res) => res.json())
       .then((res) => {
