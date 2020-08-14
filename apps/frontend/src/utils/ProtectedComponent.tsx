@@ -26,9 +26,9 @@ export default function ProtectedComponent({
         const canRender = adminFlag && roleFlag;
 
         if (canRender) {
-          return <div>{children}</div>;
+          return children;
         } else {
-          return <div></div>;
+          return null;
         }
       }}
     </RoleConsumer>
